@@ -1,24 +1,18 @@
-# README
+## Potrzeby
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+CRUD ToDo LisT przez GraphQL (Relay) z mozliwością filtrowania zadań przez Ransack.
 
-Things you may want to cover:
+Zadanie posiada pola:
+ - title
+ - estimated time
+ - delivered time
+ - stutus (todo, doing, done)
 
-* Ruby version
+## Definition of Done
+ - tests green
+ - code in git repo (branch model)
+ - MR
+ - issue board (to do, doing, done)
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Kryteria akceptacji
+ - create, read, update, delete przez GraphQL
