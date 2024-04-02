@@ -13,8 +13,6 @@ module Mutations
     def resolve(id:, attributes:)
       task = Task.find(id)
 
-      puts task.inspect
-
       if task.update(attributes.to_h)
         {
           task: task,
