@@ -16,9 +16,7 @@ module Resolvers
         end
 
         it "returns the task" do
-          post "/graphql", params: { query: valid_query }
-
-          json = JSON.parse(response.body)
+          json = fetch_task(valid_query)
           data = json["data"]["task"]
 
           expect(data).to eq("id" => task.id.to_s)
@@ -42,13 +40,17 @@ module Resolvers
         end
 
         it "returns an error" do
-          post "/graphql", params: { query: invalid_query }
-          json = JSON.parse(response.body)
+          json = fetch_task(invalid_query)
           error = json["errors"][0]["message"]
 
           expect(error).to include "Task not found"
         end
       end
+    end
+
+    def fetch_task(query)
+      post "/graphql", params: { query: }
+      JSON.parse(response.body)
     end
   end
 end
