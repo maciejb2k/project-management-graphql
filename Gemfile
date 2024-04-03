@@ -28,6 +28,10 @@ group :development, :test do
   gem "shoulda-matchers", "~> 6.2.0"
   gem "faker", "~> 3.3.0"
   gem "test-prof", "~> 1.3.2"
+
+  gem "rubocop", require: false
+  gem "rubocop-rails", require: false
+  gem "rubocop-rspec", require: false
 end
 
 group :development do

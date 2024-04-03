@@ -4,7 +4,7 @@ module Resolvers
   class TaskResolver < Resolvers::BaseResolver
     description 'Get task by ID'
 
-    type [Types::TaskType], null: false
+    type Types::TaskType, null: false
 
     argument :id, ID, required: true, description: 'ID of the task'
 
