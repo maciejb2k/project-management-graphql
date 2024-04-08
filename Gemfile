@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -11,15 +13,19 @@ gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
-gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "bootsnap", require: false
 
 gem "dotenv-rails", "~> 3.1.0"
 gem "graphql", "~> 2.3.0"
 gem "ransack", "~> 4.1.1"
+gem "devise", "~> 4.9.3"
+gem "pundit", "~> 2.3.1"
+gem "annotate", "~> 3.2.0"
+gem "validates_timeliness", "~> 7.0.0.beta1"
 
 group :development, :test do
-  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "debug", platforms: %i[mri mingw x64_mingw]
 
   gem "graphiql-rails", "~> 1.10.0"
   gem "rspec-rails", "~> 6.1.2"

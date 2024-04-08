@@ -1,5 +1,23 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: tasks
+#
+#  id             :bigint           not null, primary key
+#  title          :string           not null
+#  estimated_time :integer
+#  delivered_time :integer
+#  status         :string           default("todo"), not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  project_id     :bigint           not null
+#
 class Task < ApplicationRecord
-  STATUS_OPTIONS = %w[todo doing done]
+  belongs_to :project
+  has_many :comments, dependent: :destroy
+
+  STATUS_OPTIONS = %w[todo doing done].freeze
 
   validates :title, presence: true
   validates :estimated_time, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
