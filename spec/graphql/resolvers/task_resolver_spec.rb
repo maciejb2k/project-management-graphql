@@ -49,7 +49,7 @@ module Resolvers
     end
 
     def fetch_task(query)
-      post "/graphql", params: { query: }
+      post "/api/graphql", params: { query: }
       JSON.parse(response.body)
     end
   end

@@ -16,23 +16,23 @@ gem "jbuilder"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "bootsnap", require: false
 
+gem "bcrypt", "~> 3.1.7"
+gem "jwt_sessions", "~> 3.2.2"
 gem "dotenv-rails", "~> 3.1.0"
 gem "graphql", "~> 2.3.0"
+gem "graphiql-rails", "~> 1.10.0"
 gem "ransack", "~> 4.1.1"
-gem "devise", "~> 4.9.3"
 gem "pundit", "~> 2.3.1"
 gem "annotate", "~> 3.2.0"
 gem "validates_timeliness", "~> 7.0.0.beta1"
+gem "faker", "~> 3.3.0"
 
 group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
-
-  gem "graphiql-rails", "~> 1.10.0"
   gem "rspec-rails", "~> 6.1.2"
   gem "rspec-graphql_matchers", "~> 2.0.0.pre.rc.0"
   gem "factory_bot_rails", "~> 6.4.3"
   gem "shoulda-matchers", "~> 6.2.0"
-  gem "faker", "~> 3.3.0"
   gem "test-prof", "~> 1.3.2"
 
   gem "rubocop", require: false

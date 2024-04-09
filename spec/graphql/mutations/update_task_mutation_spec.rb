@@ -8,7 +8,7 @@ module Mutations
         let!(:valid_query) { update_query(id: task.id, title: "renamed", status: "done") }
 
         it "updates a task" do
-          post "/graphql", params: { query: valid_query }
+          post "/api/graphql", params: { query: valid_query }
 
           expect(task.reload).to have_attributes(
             title: "renamed",
@@ -17,7 +17,7 @@ module Mutations
         end
 
         it "returns a task" do
-          post "/graphql", params: { query: valid_query }
+          post "/api/graphql", params: { query: valid_query }
           json = JSON.parse(response.body)
           data = json["data"]["updateTask"]
 
@@ -40,7 +40,7 @@ module Mutations
           end
 
           it "returns an error" do
-            post "/graphql", params: { query: valid_query }
+            post "/api/graphql", params: { query: valid_query }
             json = JSON.parse(response.body)
             error = json["errors"][0]["message"]
 

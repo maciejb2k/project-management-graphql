@@ -9,12 +9,12 @@ module Mutations
 
         it "deletes a task" do
           expect do
-            post "/graphql", params: { query: valid_query }
+            post "/api/graphql", params: { query: valid_query }
           end.to change(Task, :count).by(-1)
         end
 
         it "returns a success message" do
-          post "/graphql", params: { query: valid_query }
+          post "/api/graphql", params: { query: valid_query }
           json = JSON.parse(response.body)
           data = json["data"]["deleteTask"]
 
@@ -30,7 +30,7 @@ module Mutations
           let!(:invalid_query) { delete_query(id: "invalid_id") }
 
           it "returns an error" do
-            post "/graphql", params: { query: invalid_query }
+            post "/api/graphql", params: { query: invalid_query }
             json = JSON.parse(response.body)
             error = json["errors"][0]["message"]
 
@@ -47,7 +47,7 @@ module Mutations
           end
 
           it "returns an error" do
-            post "/graphql", params: { query: valid_query }
+            post "/api/graphql", params: { query: valid_query }
             json = JSON.parse(response.body)
             error = json["errors"][0]["message"]
 

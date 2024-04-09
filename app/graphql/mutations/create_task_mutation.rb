@@ -2,7 +2,7 @@
 
 module Mutations
   class CreateTaskMutation < Mutations::BaseMutation
-    description 'Create a new task'
+    description "Create a new task"
 
     argument :attributes, Inputs::TaskInput, required: true
 
@@ -14,8 +14,8 @@ module Mutations
 
       if task.save
         {
-          task: task,
-          errors: [],
+          task:,
+          errors: []
         }
       else
         {

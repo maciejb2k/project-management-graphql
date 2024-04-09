@@ -69,12 +69,12 @@ module Mutations
 
         it "creates a task" do
           expect do
-            post "/graphql", params: { query: valid_query }
+            post "/api/graphql", params: { query: valid_query }
           end.to change(Task, :count).by(1)
         end
 
         it "returns a task" do
-          post "/graphql", params: { query: valid_query }
+          post "/api/graphql", params: { query: valid_query }
 
           json = JSON.parse(response.body)
           task = json["data"]["createTask"]["task"]
@@ -90,7 +90,7 @@ module Mutations
         let!(:invalid_query) { create_query(title: "", status: "") }
 
         it "returns an validation error" do
-          post "/graphql", params: { query: invalid_query }
+          post "/api/graphql", params: { query: invalid_query }
 
           json = JSON.parse(response.body)
           errors = json["data"]["createTask"]["errors"]

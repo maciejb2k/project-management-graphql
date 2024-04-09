@@ -6,20 +6,11 @@ class TodoGraphqlSchema < GraphQL::Schema
 
   use GraphQL::Dataloader
 
-  rescue_from(ActiveRecord::RecordNotFound) do |err, obj, args, ctx, field|
-    raise GraphQL::ExecutionError, "#{field.type.unwrap.graphql_name} not found"
-  end
-
-  def self.type_error(err, context)
-    super
-  end
-
   def self.resolve_type(abstract_type, obj, ctx)
     raise(GraphQL::RequiredImplementationMissingError)
   end
 
   validate_max_errors 100
-
   default_page_size 25
   default_max_page_size 100
 

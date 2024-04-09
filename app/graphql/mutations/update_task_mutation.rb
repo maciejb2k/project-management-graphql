@@ -2,7 +2,7 @@
 
 module Mutations
   class UpdateTaskMutation < Mutations::BaseMutation
-    description 'Update a task'
+    description "Update a task"
 
     argument :id, ID, required: true
     argument :attributes, Inputs::TaskInput, required: true
@@ -15,8 +15,8 @@ module Mutations
 
       if task.update(attributes.to_h)
         {
-          task: task,
-          errors: [],
+          task:,
+          errors: []
         }
       else
         {

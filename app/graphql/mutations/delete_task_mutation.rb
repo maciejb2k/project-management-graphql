@@ -2,7 +2,7 @@
 
 module Mutations
   class DeleteTaskMutation < Mutations::BaseMutation
-    description 'Delete a task'
+    description "Delete a task"
 
     argument :id, ID, required: true
 
