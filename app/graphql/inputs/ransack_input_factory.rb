@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-module Types
-  class RansackFactoryType
+module Inputs
+  class RansackInputFactory
     def self.build(model)
       Class.new(Inputs::BaseInput) do
         model_name = model.to_s.camelize
         model_class = model_name.constantize
 
-        graphql_name "#{model_name}RansackInputType"
+        graphql_name "#{model_name}RansackFiltersInput"
         description "Ransack search query filters for #{model_name}"
 
         # Search matchers

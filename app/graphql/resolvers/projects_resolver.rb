@@ -6,7 +6,7 @@ module Resolvers
 
     type Types::ProjectType.connection_type, null: false
 
-    argument :query, Types::RansackFactoryType.build(:project), required: false, description: "Search query"
+    argument :query, Inputs::RansackInputFactory.build(:project), required: false, description: "Search query"
 
     def resolve(query: nil)
       authorize_by_access_header!
