@@ -1,6 +1,22 @@
+# == Schema Information
+#
+# Table name: tasks
+#
+#  id             :bigint           not null, primary key
+#  title          :string           not null
+#  estimated_time :integer
+#  delivered_time :integer
+#  status         :string           default("todo"), not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  project_id     :bigint           not null
+#
 RSpec.describe Task, type: :model do
   describe "factory" do
-    it { expect(build(:task)).to be_valid }
+    let!(:user) { create(:user) }
+    let!(:project) { create(:project, user:) }
+
+    it { expect(build(:task, project:)).to be_valid }
   end
 
   describe "validations" do
