@@ -16,15 +16,22 @@ gem "jbuilder"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "bootsnap", require: false
 
+gem "dotenv-rails", "~> 3.1.0"
+
 gem "bcrypt", "~> 3.1.7"
 gem "jwt_sessions", "~> 3.2.2"
-gem "dotenv-rails", "~> 3.1.0"
+
 gem "graphql", "~> 2.3.0"
 gem "graphiql-rails", "~> 1.10.0"
+gem "ar_lazy_preload", "~> 2.1.0"
+
 gem "ransack", "~> 4.1.1"
+
 gem "pundit", "~> 2.3.1"
+
 gem "annotate", "~> 3.2.0"
 gem "validates_timeliness", "~> 7.0.0.beta1"
+
 gem "faker", "~> 3.3.0"
 
 group :development, :test do

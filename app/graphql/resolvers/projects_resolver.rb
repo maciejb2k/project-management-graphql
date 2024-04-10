@@ -11,7 +11,11 @@ module Resolvers
     def resolve(query: nil)
       authorize_by_access_header!
 
-      current_user.projects.ransack(query).result(distinct: true)
+      current_user
+        .projects
+        .lazy_preload(tasks: :comments)
+        .ransack(query)
+        .result(distinct: true)
     end
   end
 end
