@@ -4,13 +4,18 @@ module Mutations
   class CreateTaskMutation < Mutations::BaseMutation
     description "Create a new task"
 
+    argument :project_id, ID, required: true
     argument :attributes, Inputs::TaskInput, required: true
 
     field :task, Types::TaskType, null: true
     field :errors, [String], null: true
 
-    def resolve(attributes:)
-      task = Task.new(attributes.to_h)
+    def resolve(project_id:, attributes:)
+      authorize_by_access_header!
+
+      task = current_user
+             .projects.find(project_id)
+             .tasks.build(attributes.to_h)
 
       if task.save
         {

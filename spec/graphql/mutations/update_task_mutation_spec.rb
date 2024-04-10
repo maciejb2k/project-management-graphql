@@ -3,12 +3,16 @@
 module Mutations
   RSpec.describe UpdateTaskMutation, type: :request do
     describe "#resolve" do
+      let!(:user) { create(:user) }
+      let!(:tokens) { sign_in(user) }
+
       context "when the request is valid" do
-        let!(:task) { create(:task, title: "task to rename") }
-        let!(:valid_query) { update_query(id: task.id, title: "renamed", status: "done") }
+        let!(:project) { create(:project, user:) }
+        let!(:task) { create(:task, project:, title: "task to rename") }
+        let!(:valid_query) { update_query(project_id: project.id, id: task.id, title: "renamed", status: "done") }
 
         it "updates a task" do
-          post "/api/graphql", params: { query: valid_query }
+          post "/api/graphql", params: { query: valid_query }, headers: auth_headers(tokens)
 
           expect(task.reload).to have_attributes(
             title: "renamed",
@@ -17,7 +21,7 @@ module Mutations
         end
 
         it "returns a task" do
-          post "/api/graphql", params: { query: valid_query }
+          post "/api/graphql", params: { query: valid_query }, headers: auth_headers(tokens)
           json = JSON.parse(response.body)
           data = json["data"]["updateTask"]
 
@@ -32,28 +36,27 @@ module Mutations
 
       context "when the request is invalid" do
         context "when the id is invalid" do
-          let!(:task) { create(:task, title: "task to rename") }
-          let!(:valid_query) { update_query(id: task.id, title: "renamed", status: "done") }
+          let!(:project) { create(:project, user:) }
+          let!(:task) { create(:task, project:, title: "task to rename") }
+          let!(:valid_query) { update_query(project_id: project.id, id: task.id, title: "renamed", status: "done") }
 
           before do
             task.destroy
           end
 
           it "returns an error" do
-            post "/api/graphql", params: { query: valid_query }
-            json = JSON.parse(response.body)
-            error = json["errors"][0]["message"]
-
-            expect(error).to include "UpdateTaskMutationPayload not found"
+            expect do
+              post "/api/graphql", params: { query: valid_query }, headers: auth_headers(tokens)
+            end.to raise_error(ActiveRecord::RecordNotFound)
           end
         end
       end
     end
 
-    def update_query(id:, title: "Task 1", status: "todo")
+    def update_query(project_id:, id:, title: "Task 1", status: "todo")
       <<~GQL
         mutation {
-          updateTask(input: { id: #{id}, attributes: { title: "#{title}", status: "#{status}" }}) {
+          updateTask(input: { projectId: #{project_id}, id: #{id}, attributes: { title: "#{title}", status: "#{status}" }}) {
             task {
               id
               title

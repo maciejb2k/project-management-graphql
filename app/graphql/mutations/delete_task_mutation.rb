@@ -4,13 +4,18 @@ module Mutations
   class DeleteTaskMutation < Mutations::BaseMutation
     description "Delete a task"
 
+    argument :project_id, ID, required: true
     argument :id, ID, required: true
 
     field :success, Boolean, null: false
     field :errors, [String], null: false
 
-    def resolve(id:)
-      task = Task.find(id)
+    def resolve(project_id:, id:)
+      authorize_by_access_header!
+
+      task = current_user
+             .projects.find(project_id)
+             .tasks.find(id)
 
       if task.destroy
         {
@@ -20,7 +25,7 @@ module Mutations
       else
         {
           success: false,
-          errors: playlist.errors.full_messages
+          errors: task.errors.full_messages
         }
       end
     end

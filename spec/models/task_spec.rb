@@ -13,7 +13,10 @@
 #
 RSpec.describe Task, type: :model do
   describe "factory" do
-    it { expect(build(:task)).to be_valid }
+    let!(:user) { create(:user) }
+    let!(:project) { create(:project, user:) }
+
+    it { expect(build(:task, project:)).to be_valid }
   end
 
   describe "validations" do
