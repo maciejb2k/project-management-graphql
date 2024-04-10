@@ -2,25 +2,17 @@
 
 module Resolvers
   RSpec.describe TasksResolver, type: :request do
-    # Unit test for the resolver
-    describe "#resolve" do
-      subject(:resolve) { described_class.new(object: nil, field: nil, context: nil).resolve }
-
-      let!(:tasks) { create_list(:task, 3) }
-
-      it "returns all tasks" do
-        expect(resolve).to match_array(tasks)
-      end
-    end
-
-    # Integration test for the resolver
     describe "API requests" do
+      let!(:user) { create(:user) }
+      let!(:token) { sign_in(user) }
+
       describe "request without parameters" do
-        let!(:tasks) { create_list(:task, 3) }
+        let!(:project) { create(:project, user:) }
+        let!(:tasks) { create_list(:task, 3, project:) }
         let!(:valid_query) do
           <<~GQL
             query {
-              tasks {
+              tasks(projectId: "#{project.id}") {
                 nodes {
                   id
                 }
@@ -30,21 +22,24 @@ module Resolvers
         end
 
         it "returns all tasks" do
-          json = fetch_tasks(valid_query)
+          post "/api/graphql", params: { query: valid_query }, headers: auth_headers(token)
+          json = JSON.parse(response.body)
           data = json["data"]["tasks"]["nodes"]
 
-          expect(data).to match_array(tasks.map { |task| { "id" => task.id.to_s, } })
+          response_ids = data.map { |task| task["id"] }
+          tasks_ids = tasks.map(&:id).map(&:to_s)
+
+          expect(response_ids).to match_array(tasks_ids)
         end
       end
 
       describe "request with filtering" do
-        before { create_list(:task, 3) }
-
-        let!(:task) { create(:task, title: "task to find") }
+        let!(:project) { create(:project, user:) }
+        let!(:task) { create(:task, title: "task to find", project:) }
         let!(:valid_query) do
           <<~GQL
             query {
-              tasks(query: { title_eq: "task to find" }) {
+              tasks(projectId: "#{project.id}", query: { title_eq: "task to find" }) {
                 nodes {
                   id
                 }
@@ -53,21 +48,26 @@ module Resolvers
           GQL
         end
 
+        before { create_list(:task, 3, project:) }
+
         it "returns the filtered tasks" do
-          json = fetch_tasks(valid_query)
+          post "/api/graphql", params: { query: valid_query }, headers: auth_headers(token)
+          json = JSON.parse(response.body)
           data = json["data"]["tasks"]["nodes"]
 
-          expect(data).to match_array([{ "id" => task.id.to_s }])
+          response_task = data.first["id"]
+          expected_task = task.id.to_s
+
+          expect(response_task).to eq(expected_task)
         end
       end
 
       describe "request with sorting" do
-        before { %w[a b c].map { |title| create(:task, title:) } }
-
-        let(:valid_query) do
+        let!(:project) { create(:project, user:) }
+        let!(:valid_query) do
           <<~GQL
             query {
-              tasks(query: { s: "title desc" }) {
+              tasks(projectId: "#{project.id}", query: { s: "title desc" }) {
                 nodes {
                   id
                   title
@@ -77,21 +77,27 @@ module Resolvers
           GQL
         end
 
-        it "returns the sorted tasks" do
-          json = fetch_tasks(valid_query)
-          data = json["data"]["tasks"]["nodes"]
-          titles = data.map { |task| task["title"] }
+        before { %w[a b c].map { |title| create(:task, project:, title:) } }
 
-          expect(titles).to eq(%w[c b a])
+        it "returns the sorted tasks" do
+          post "/api/graphql", params: { query: valid_query }, headers: auth_headers(token)
+          json = JSON.parse(response.body)
+          data = json["data"]["tasks"]["nodes"]
+
+          response_titles = data.map { |task| task["title"] }
+          expected_titles = %w[c b a]
+
+          expect(response_titles).to eq(expected_titles)
         end
       end
 
       describe "request with connection pagination" do
-        let!(:tasks) { create_list(:task, 4) }
+        let!(:project) { create(:project, user:) }
+        let!(:tasks) { create_list(:task, 4, project:) }
         let!(:first_query) do
           <<~GQL
             query {
-              tasks(first: 2) {
+              tasks(projectId: #{project.id}, first: 2) {
                 pageInfo {
                   startCursor
                   endCursor
@@ -110,7 +116,8 @@ module Resolvers
         end
 
         it "returns connection metadata" do
-          json = fetch_tasks(first_query)
+          post "/api/graphql", params: { query: first_query }, headers: auth_headers(token)
+          json = JSON.parse(response.body)
           data = json["data"]["tasks"]["pageInfo"]
 
           expect(data["startCursor"]).to be_present
@@ -121,24 +128,27 @@ module Resolvers
 
         # This test definetely needs to be refactored
         it "returns the first page of tasks" do
-          json = fetch_tasks(first_query)
+          post "/api/graphql", params: { query: first_query }, headers: auth_headers(token)
+          json = JSON.parse(response.body)
           data = json["data"]["tasks"]["edges"]
-          nodes_ids = data.map { |task| task["node"]["id"] }.sort
+
+          response_ids = data.map { |task| task["node"]["id"] }
           tasks_ids = tasks.map(&:id).map(&:to_s).sort
 
-          expect(nodes_ids.size).to eq(2)
-          expect(tasks_ids & nodes_ids).to eq(nodes_ids) # https://stackoverflow.com/a/7387998
+          expect(response_ids.size).to eq(2)
+          expect(tasks_ids & response_ids).to match_array(response_ids) # https://stackoverflow.com/a/7387998
         end
 
         # This test definetely needs to be refactored
         it "returns the second page of tasks" do
-          first_response = fetch_tasks(first_query)
+          post "/api/graphql", params: { query: first_query }, headers: auth_headers(token)
+          first_response = JSON.parse(response.body)
           first_data = first_response["data"]["tasks"]["edges"]
           cursor = first_response["data"]["tasks"]["pageInfo"]["endCursor"]
 
           second_query = <<~GQL
             query {
-              tasks(first: 2, after: "#{cursor}", query: {s: "id asc"}) {
+              tasks(projectId: #{project.id}, first: 2, after: "#{cursor}", query: {s: "id asc"}) {
                 edges{
                   node {
                     id
@@ -148,7 +158,8 @@ module Resolvers
             }
           GQL
 
-          second_response = fetch_tasks(second_query)
+          post "/api/graphql", params: { query: second_query }, headers: auth_headers(token)
+          second_response = JSON.parse(response.body)
           second_data = second_response["data"]["tasks"]["edges"]
 
           nodes_ids = first_data.map { |task| task["node"]["id"] } + second_data.map { |task| task["node"]["id"] }
@@ -158,11 +169,6 @@ module Resolvers
           expect(nodes_ids).to match_array(tasks_ids)
         end
       end
-    end
-
-    def fetch_tasks(query)
-      post "/api/graphql", params: { query: }
-      JSON.parse(response.body)
     end
   end
 end

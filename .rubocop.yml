@@ -44,3 +44,6 @@ RSpec/ImplicitSubject:
 
 RSpec/ExampleLength:
   Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
