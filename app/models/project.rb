@@ -25,6 +25,6 @@ class Project < ApplicationRecord
   validates :description, length: { maximum: 500 }, allow_blank: true
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[title]
+    %w[title description]
   end
 end

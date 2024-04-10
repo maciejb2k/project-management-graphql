@@ -6,7 +6,7 @@ module Resolvers
 
     type Types::ProjectType.connection_type, null: false
 
-    argument :query, GraphQL::Types::JSON, required: false, description: "Search query"
+    argument :query, Types::RansackFactoryType.build(:project), required: false, description: "Search query"
 
     def resolve(query: nil)
       authorize_by_access_header!
@@ -14,7 +14,7 @@ module Resolvers
       current_user
         .projects
         .lazy_preload(tasks: :comments)
-        .ransack(query)
+        .ransack(query.to_h)
         .result(distinct: true)
     end
   end
