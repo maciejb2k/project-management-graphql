@@ -13,5 +13,10 @@ module Types
     field :user, Types::UserType, null: false
     field :tasks, [Types::TaskType], null: false
     field :members, [Types::UserType], null: false
+    field :owner, Types::UserType, null: false
+
+    def owner
+      object.project_members.find_by(role: "owner").user
+    end
   end
 end

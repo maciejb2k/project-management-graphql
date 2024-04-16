@@ -24,6 +24,17 @@ module Mutations
             "title" => "Project 1"
           )
         end
+
+        it "sets the current user as the owner of the project" do
+          post "/api/graphql", params: { query: valid_query }, headers: auth_headers(tokens)
+          json = JSON.parse(response.body)
+          project = json["data"]["createProject"]["project"]
+
+          expect(project["members"].count).to eq(1)
+          expect(project["members"].first["email"]).to eq(user.email)
+          expect(project["owner"]["email"]).to eq(user.email)
+          expect(ProjectMember.where(user:, project: project["id"], role: "owner").count).to eq(1)
+        end
       end
 
       context "when the request is invalid" do
@@ -47,6 +58,12 @@ module Mutations
             project {
               id
               title
+              members {
+                email
+              }
+              owner {
+                email
+              }
             }
             errors
           }

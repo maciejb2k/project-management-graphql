@@ -19,12 +19,20 @@ class Project < ApplicationRecord
 
   has_many :tasks, dependent: :destroy
   has_many :project_members, dependent: :destroy
-  has_many :users, through: :project_members
+  has_many :members, through: :project_members, source: :user
 
   validates :title, presence: true
   validates :description, length: { maximum: 500 }, allow_blank: true
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[title description]
+  end
+
+  def add_member(user)
+    members << user
+  end
+
+  def remove_member(user)
+    members.delete(user)
   end
 end
