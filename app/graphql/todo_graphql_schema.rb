@@ -14,6 +14,10 @@ class TodoGraphqlSchema < GraphQL::Schema
   default_page_size 25
   default_max_page_size 100
 
+  rescue_from Pundit::NotAuthorizedError do
+    raise GraphQL::ExecutionError, "You are not authorized to perform this action."
+  end
+
   # Relay-style Object Identification:
 
   def self.id_from_object(object, type_definition, query_ctx)

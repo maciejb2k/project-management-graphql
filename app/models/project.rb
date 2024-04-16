@@ -35,4 +35,12 @@ class Project < ApplicationRecord
   def remove_member(user)
     members.delete(user)
   end
+
+  def owner
+    user
+  end
+
+  def member?(user)
+    members.include?(user)
+  end
 end
