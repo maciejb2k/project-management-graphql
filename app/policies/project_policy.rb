@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class ProjectPolicy < ApplicationPolicy
+  def show?
+    owner? || member?
+  end
+
   def create?
     owner?
   end

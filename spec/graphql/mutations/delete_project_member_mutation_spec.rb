@@ -14,15 +14,7 @@ module Mutations
         let(:project) { create(:project, user:) }
         let(:members) { create_list(:user, 3) }
 
-        # Project is always created with the owner as a member by the mutation,
-        # but in the spec I need to manually create the owner as a member.
-        #
-        # I didn't use callbacks for creating the owner as a member by default,
-        # but I see that remembering to create the owner as a member in the spec
-        # is code smell to be refactored later.
         before do
-          create(:project_member, project:, user:, role: "owner")
-
           members.each do |member|
             create(:project_member, project:, user: member)
           end
