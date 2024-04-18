@@ -41,6 +41,7 @@ group :development, :test do
   gem "factory_bot_rails", "~> 6.4.3"
   gem "shoulda-matchers", "~> 6.2.0"
   gem "test-prof", "~> 1.3.2"
+  gem "activerecord-explain-analyze", "~> 0.1.0"
 
   gem "rubocop", require: false
   gem "rubocop-rails", require: false

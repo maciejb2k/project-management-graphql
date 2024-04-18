@@ -14,17 +14,19 @@ module Mutations
 
       project = current_user.projects.build(attributes.to_h)
 
-      if project.save
-        {
-          project:,
-          errors: []
-        }
-      else
-        {
+      unless project.save
+        return {
           project: nil,
           errors: project.errors.full_messages
         }
       end
+
+      project.project_members.create(user: current_user, role: "owner")
+
+      {
+        project:,
+        errors: []
+      }
     end
   end
 end

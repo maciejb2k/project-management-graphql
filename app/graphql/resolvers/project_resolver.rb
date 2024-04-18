@@ -11,7 +11,11 @@ module Resolvers
     def resolve(id:)
       authorize_by_access_header!
 
-      current_user.projects.lazy_preload(tasks: :comments).find(id)
+      Project
+        .joins(:project_members)
+        .where(project_members: { user: current_user })
+        .lazy_preload(tasks: :comments)
+        .find(id)
     end
   end
 end

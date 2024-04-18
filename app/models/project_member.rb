@@ -14,5 +14,13 @@ class ProjectMember < ApplicationRecord
   belongs_to :project
   belongs_to :user
 
+  ROLES = %w[guest owner developer].freeze
+
+  validates :role, presence: true, inclusion: { in: ROLES }
   validates :project_id, uniqueness: { scope: :user_id }
+  validates :role, uniqueness: { scope: %i[project_id user_id], if: -> { owner? } }
+
+  def owner?
+    role == "owner"
+  end
 end
