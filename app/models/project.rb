@@ -39,12 +39,4 @@ class Project < ApplicationRecord
   def owner
     user
   end
-
-  def member?(user)
-    members.include?(user)
-  end
-
-  def non_owner_member?(user)
-    members.include?(user) && user != owner
-  end
 end
