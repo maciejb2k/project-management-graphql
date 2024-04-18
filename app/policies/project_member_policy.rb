@@ -2,20 +2,13 @@
 
 class ProjectMemberPolicy < ApplicationPolicy
   def create?
-    project_owner?
-  end
-
-  def destroy?
-    project_owner? || project_member?
-  end
-
-  private
-
-  def project_owner?
     user == record.project.owner
   end
 
-  def project_member?
-    record.project.members.include?(user)
+  def destroy?
+    return true if user == record.project.owner && user != record.user
+    return true if user != record.project.owner && user == record.user
+
+    false
   end
 end
