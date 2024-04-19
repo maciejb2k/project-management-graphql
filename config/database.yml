@@ -1,20 +1,17 @@
 default: &default
   adapter: postgresql
-  encoding: unicode
-  host: <%= ENV['POSTGRES_HOST'] %>
-  port: <%= ENV['POSTGRES_PORT'] %>
-  username: <%= ENV['POSTGRES_USERNAME'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  timeout: 10000
   pool: <%= ENV.fetch('RAILS_MAX_THREADS') { 5 } %>
+  encoding: utf8
 
 development:
   <<: *default
-  database: <%= ENV.fetch('DB_DEVELOPMENT_NAME') %>
+  database: <%= ENV.fetch('DATABASE_URL') %>
 
 test:
   <<: *default
-  database: <%= ENV.fetch('DB_TEST_NAME') %>
+  database: <%= ENV.fetch('DATABASE_URL') %>
 
 production:
   <<: *default
-  database: <%= ENV.fetch('DB_PRODUCTION_NAME') %>
+  database: <%= ENV.fetch('DATABASE_URL') %>
