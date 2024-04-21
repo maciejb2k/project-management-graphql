@@ -7,6 +7,7 @@ module Api
       query = params[:query]
       operation_name = params[:operationName]
       context = {
+        current_resource_owner:,
         current_user:,
         request:
       }
@@ -49,5 +50,4 @@ module Api
              status: :internal_server_error
     end
   end
-
 end
