@@ -9,7 +9,7 @@ module Resolvers
     argument :id, ID, required: true, description: "ID of the project"
 
     def resolve(id:)
-      authorize_by_access_header!
+      authenticate_user!
 
       Project
         .joins(:project_members)

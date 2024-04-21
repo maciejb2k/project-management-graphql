@@ -19,7 +19,8 @@ gem "bootsnap", require: false
 gem "dotenv-rails", "~> 3.1.0"
 
 gem "bcrypt", "~> 3.1.7"
-gem "jwt_sessions", "~> 3.2.2"
+gem "devise", "~> 4.9.4"
+gem "doorkeeper", "~> 5.6.9"
 
 gem "graphql", "~> 2.3.0"
 gem "graphiql-rails", "~> 1.10.0"

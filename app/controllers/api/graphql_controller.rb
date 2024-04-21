@@ -7,9 +7,8 @@ module Api
       query = params[:query]
       operation_name = params[:operationName]
       context = {
-        request_headers: request.headers,
-        request_cookies: request.cookies,
-        request_method: request.request_method
+        current_user:,
+        request:
       }
       result = TodoGraphqlSchema.execute(query, variables:, context:, operation_name:)
 
