@@ -9,6 +9,7 @@
 #  updated_at :datetime         not null
 #  project_id :bigint           not null
 #  user_id    :bigint           not null
+#  role       :string           default("guest"), not null
 #
 class ProjectMember < ApplicationRecord
   belongs_to :project

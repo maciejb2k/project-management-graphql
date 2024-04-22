@@ -1,5 +1,19 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: projects
+#
+#  id          :bigint           not null, primary key
+#  title       :string           default(""), not null
+#  description :string
+#  start_date  :date
+#  end_date    :date
+#  is_deleted  :boolean          default(FALSE)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  user_id     :bigint           not null
+#
 FactoryBot.define do
   factory :project do
     title { Faker::App.name }
