@@ -11,7 +11,7 @@ module Mutations
     field :errors, [String], null: true
 
     def resolve(project_id:, user_id:)
-      authorize_by_access_header!
+      authenticate_user!
 
       project = Project.find(project_id)
       project_member = project.project_members.find_by!(user_id:)

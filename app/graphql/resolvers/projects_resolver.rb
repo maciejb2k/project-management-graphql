@@ -9,7 +9,7 @@ module Resolvers
     argument :query, Inputs::RansackInputFactory.build(:project), required: false, description: "Search query"
 
     def resolve(query: nil)
-      authorize_by_access_header!
+      authenticate_user!
 
       Project
         .joins(:project_members)

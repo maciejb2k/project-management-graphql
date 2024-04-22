@@ -2,21 +2,19 @@
 
 module Resolvers
   RSpec.describe ProjectResolver, type: :request do
-    describe "#resolve" do
+    context "when user is not authenticated" do
+      let(:query) { create_query(id: 1) }
+
+      include_examples "returns an error when user is not authenticated"
+    end
+
+    context "when user is authenticated" do
       let!(:user) { create(:user) }
       let!(:tokens) { sign_in(user) }
 
       context "when user requests a project that doesn't belong to them" do
         let!(:project) { create(:project, user: create(:user)) }
-        let!(:query) do
-          <<~GQL
-            query {
-              project(id: #{project.id}) {
-                id
-              }
-            }
-          GQL
-        end
+        let!(:query) { create_query(id: project.id) }
 
         it "returns an error" do
           expect do
@@ -27,15 +25,7 @@ module Resolvers
 
       context "when user requests a project that belongs to them" do
         let!(:project) { create(:project, user:) }
-        let!(:query) do
-          <<~GQL
-            query {
-              project(id: #{project.id}) {
-                id
-              }
-            }
-          GQL
-        end
+        let!(:query) { create_query(id: project.id) }
 
         it "returns the project" do
           post "/api/graphql", params: { query: }, headers: auth_headers(tokens)
@@ -48,15 +38,7 @@ module Resolvers
 
       context "when request has invalid id" do
         let!(:project) { create(:project, user:) }
-        let!(:invalid_query) do
-          <<~GQL
-            query {
-              project(id: #{project.id}) {
-                id
-              }
-            }
-          GQL
-        end
+        let!(:invalid_query) { create_query(id: project.id) }
 
         before do
           project.destroy
@@ -68,6 +50,16 @@ module Resolvers
           end.to raise_error(ActiveRecord::RecordNotFound)
         end
       end
+    end
+
+    def create_query(id:)
+      <<~GQL
+        query {
+          project(id: #{id}) {
+            id
+          }
+        }
+      GQL
     end
   end
 end

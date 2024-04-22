@@ -2,13 +2,19 @@
 
 module Mutations
   RSpec.describe DeleteProjectMutation, type: :request do
-    describe "#resolve" do
+    context "when user is not authenticated" do
+      let(:query) { create_query(id: 1) }
+
+      include_examples "returns an error when user is not authenticated"
+    end
+
+    context "when user is authenticated" do
       let!(:user) { create(:user) }
       let!(:tokens) { sign_in(user) }
 
       context "when the request is valid" do
         let!(:project) { create(:project, user:) }
-        let!(:valid_query) { delete_query(id: project.id) }
+        let!(:valid_query) { create_query(id: project.id) }
 
         it "deletes a project" do
           expect do
@@ -29,7 +35,7 @@ module Mutations
       end
 
       context "when the request is invalid" do
-        let!(:invalid_query) { delete_query(id: "xd") }
+        let!(:invalid_query) { create_query(id: "xd") }
 
         it "returns an error" do
           post "/api/graphql", params: { query: invalid_query }, headers: auth_headers(tokens)
@@ -42,7 +48,7 @@ module Mutations
 
       context "when the project is already deleted" do
         let!(:project) { create(:project, user:) }
-        let!(:valid_query) { delete_query(id: project.id) }
+        let!(:valid_query) { create_query(id: project.id) }
 
         before do
           project.destroy
@@ -56,7 +62,7 @@ module Mutations
       end
     end
 
-    def delete_query(id:)
+    def create_query(id:)
       <<~GQL
         mutation {
           deleteProject(input: { id: #{id} }) {

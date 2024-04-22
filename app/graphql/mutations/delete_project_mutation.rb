@@ -10,7 +10,7 @@ module Mutations
     field :errors, [String], null: false
 
     def resolve(id:)
-      authorize_by_access_header!
+      authenticate_user!
 
       project = current_user.projects.find(id)
 

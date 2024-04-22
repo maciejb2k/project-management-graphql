@@ -10,7 +10,7 @@ module Resolvers
     argument :query, Inputs::RansackInputFactory.build(:task), required: false, description: "Search query"
 
     def resolve(project_id:, query: nil)
-      authorize_by_access_header!
+      authenticate_user!
 
       current_user
         .projects

@@ -10,7 +10,7 @@ module Resolvers
     argument :id, ID, required: true, description: "ID of the task"
 
     def resolve(project_id:, id:)
-      authorize_by_access_header!
+      authenticate_user!
 
       projects = current_user.projects.find(project_id)
       projects.tasks.find(id)

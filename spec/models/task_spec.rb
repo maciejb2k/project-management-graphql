@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: tasks
@@ -26,6 +28,7 @@ RSpec.describe Task, type: :model do
 
     describe "status" do
       it { is_expected.to validate_presence_of(:status) }
+
       it do
         is_expected.to(
           validate_inclusion_of(:status)

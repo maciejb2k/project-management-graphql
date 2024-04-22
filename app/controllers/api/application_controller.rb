@@ -2,5 +2,6 @@
 
 module Api
   class ApplicationController < ActionController::API
+    include DoorkeeperMethods
   end
 end

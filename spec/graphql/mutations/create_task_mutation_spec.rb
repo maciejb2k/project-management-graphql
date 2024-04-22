@@ -2,7 +2,13 @@
 
 module Mutations
   RSpec.describe CreateTaskMutation, type: :request do
-    describe "#resolve" do
+    context "when user is not authenticated" do
+      let(:query) { create_query(project_id: 1, title: "Task 1", status: "todo") }
+
+      include_examples "returns an error when user is not authenticated"
+    end
+
+    context "when user is authenticated" do
       let!(:user) { create(:user) }
       let!(:tokens) { sign_in(user) }
 
