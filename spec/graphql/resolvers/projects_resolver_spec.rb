@@ -2,26 +2,23 @@
 
 module Resolvers
   RSpec.describe ProjectsResolver, type: :request do
-    describe "#resolve" do
+    context "when user is not authenticated" do
+      let(:query) { create_query }
+
+      include_examples "returns an error when user is not authenticated"
+    end
+
+    context "when user is authenticated" do
       let!(:user) { create(:user) }
       let!(:tokens) { sign_in(user) }
 
       context "when request is without parameters" do
         let!(:projects) { create_list(:project, 3, user:) }
-        let!(:valid_query) do
-          <<~GQL
-            query {
-              projects {
-                nodes {
-                  id
-                }
-              }
-            }
-          GQL
-        end
+        let!(:valid_query) { create_query }
 
         it "returns all projects" do
           post "/api/graphql", params: { query: valid_query }, headers: auth_headers(tokens)
+
           json = JSON.parse(response.body)
           data = json["data"]["projects"]["nodes"]
 
@@ -64,17 +61,7 @@ module Resolvers
       context "when user belongs to multiple projects" do
         let!(:projects) { create_list(:project, 3, user:) }
         let!(:other_project) { create(:project, user: create(:user)) }
-        let!(:valid_query) do
-          <<~GQL
-            query {
-              projects {
-                nodes {
-                  id
-                }
-              }
-            }
-          GQL
-        end
+        let!(:valid_query) { create_query }
 
         before do
           # Create extra projects the user doesn't belong to
@@ -98,17 +85,7 @@ module Resolvers
       end
 
       context "when the user doesn't belong to any project" do
-        let!(:valid_query) do
-          <<~GQL
-            query {
-              projects {
-                nodes {
-                  id
-                }
-              }
-            }
-          GQL
-        end
+        let!(:valid_query) { create_query }
 
         before { create_list(:project, 3) }
 
@@ -120,6 +97,18 @@ module Resolvers
           expect(data).to be_empty
         end
       end
+    end
+
+    def create_query
+      <<~GQL
+        query {
+          projects {
+            nodes {
+              id
+            }
+          }
+        }
+      GQL
     end
   end
 end

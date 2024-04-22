@@ -7,9 +7,10 @@ module Api
       query = params[:query]
       operation_name = params[:operationName]
       context = {
-        current_resource_owner:,
-        current_user:,
-        request:
+        # `doorkeeper_token` can be used to retrieve scopes, but when
+        # passing devise `current_user`, we can't use oauth scopes anymore.
+        current_user: current_user || current_resource_owner,
+        doorkeeper_token:
       }
       result = TodoGraphqlSchema.execute(query, variables:, context:, operation_name:)
 

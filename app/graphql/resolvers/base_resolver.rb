@@ -2,6 +2,6 @@
 
 module Resolvers
   class BaseResolver < GraphQL::Schema::Resolver
-    include AuthHelper
+    include Helpers::Authorization
   end
 end

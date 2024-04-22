@@ -2,7 +2,7 @@
 
 module Helpers
   module Authentication
-    def sign_in_raw(user)
+    def sign_in(user)
       post "/oauth/token", params: {
         grant_type: "password",
         email: user.email,
@@ -10,11 +10,7 @@ module Helpers
         client_id: Doorkeeper::Application.first.uid,
         client_secret: Doorkeeper::Application.first.secret
       }
-      JSON.parse(response.body)
-    end
-
-    def sign_in(user)
-      json = sign_in_raw(user)
+      json = JSON.parse(response.body)
       json.symbolize_keys
     end
 

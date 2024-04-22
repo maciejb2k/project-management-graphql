@@ -2,7 +2,7 @@
 
 module Mutations
   class BaseMutation < GraphQL::Schema::RelayClassicMutation
-    include AuthHelper
+    include Helpers::Authorization
 
     argument_class Types::BaseArgument
     field_class Types::BaseField
