@@ -11,9 +11,5 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :project, Types::ProjectType, null: false
     field :comments, [Types::CommentType], null: false
-
-    def self.authorized?(object, context)
-      super && Pundit.policy!(context[:current_user], object).read?
-    end
   end
 end

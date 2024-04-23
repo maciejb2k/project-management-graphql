@@ -12,8 +12,11 @@ module Resolvers
     def resolve(project_id:, query: nil)
       authenticate_user!
 
-      Project
-        .find(project_id)
+      project = Project.find(project_id)
+
+      authorize project, :read?
+
+      project
         .tasks
         .lazy_preload(:comments)
         .ransack(query.to_h)

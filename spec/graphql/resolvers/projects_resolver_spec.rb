@@ -105,6 +105,9 @@ module Resolvers
           projects {
             nodes {
               id
+              tasks {
+                id
+              }
             }
           }
         }

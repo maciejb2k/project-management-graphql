@@ -12,8 +12,11 @@ module Resolvers
     def resolve(project_id:, id:)
       authenticate_user!
 
-      projects = Project.find(project_id)
-      projects.tasks.find(id)
+      project = Project.find(project_id)
+
+      authorize project, :read?
+
+      project.tasks.find(id)
     end
   end
 end
