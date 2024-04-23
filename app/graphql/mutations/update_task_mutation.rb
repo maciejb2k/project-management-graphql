@@ -18,6 +18,8 @@ module Mutations
              .projects.find(project_id)
              .tasks.find(id)
 
+      authorize task, :update?
+
       if task.update(attributes.to_h)
         {
           task:,

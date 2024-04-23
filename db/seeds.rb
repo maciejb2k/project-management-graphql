@@ -24,23 +24,35 @@ Permission.create(
     { action: "read",          resource: "task" },
     { action: "update",        resource: "task" },
     { action: "delete",        resource: "task" },
-    { action: "status_change", resource: "task" }
+    { action: "status_change", resource: "task" },
+
+    { action: "create",        resource: "project" },
+    { action: "read",          resource: "project" },
+    { action: "update",        resource: "project" },
+    { action: "delete",        resource: "project" }
   ]
 )
 
 Rails.logger.info "Permissions created"
 
-Role.find_by(name: "supervisor").permissions << Permission.where(
+supervisor = Role.find_by(name: "supervisor")
+supervisor.permissions << Permission.where(
   action: %w[create read update delete status_change],
   resource: "task"
 )
+supervisor.permissions << Permission.where(
+  action: %w[create read update delete],
+  resource: "project"
+)
 
-Role.find_by(name: "manager").permissions << Permission.where(
+manager = Role.find_by(name: "manager")
+manager.permissions << Permission.where(
   action: %w[create read update delete],
   resource: "task"
 )
 
-Role.find_by(name: "operator").permissions << Permission.where(
+operator = Role.find_by(name: "operator")
+operator.permissions << Permission.where(
   action: %w[read status_change],
   resource: "task"
 )
@@ -51,7 +63,8 @@ users = User.create!(
   [
     { email: "maciek@example.com", password: "password" },
     { email: "konrad@example.com", password: "password" },
-    { email: "anna@example.com", password: "password" }
+    { email: "anna@example.com", password: "password" },
+    { email: "tomek@example.com", password: "password" }
   ]
 )
 

@@ -18,5 +18,9 @@ module Types
     def owner
       object.project_members.find_by(role: "owner").user
     end
+
+    def self.authorized?(object, context)
+      super && Pundit.policy!(context[:current_user], object).read?
+    end
   end
 end

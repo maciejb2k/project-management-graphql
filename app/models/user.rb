@@ -44,6 +44,14 @@ class User < ApplicationRecord
     user&.valid_password?(password) ? user : nil
   end
 
+  def role?(name)
+    roles.exists?(name:)
+  end
+
+  def permission?(action:, resource:)
+    roles.joins(:permissions).where(permissions: { action:, resource: }).exists?
+  end
+
   private
 
   def assign_default_role

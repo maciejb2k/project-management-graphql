@@ -17,6 +17,8 @@ module Mutations
              .projects.find(project_id)
              .tasks.find(id)
 
+      authorize task, :delete?
+
       if task.destroy
         {
           success: true,

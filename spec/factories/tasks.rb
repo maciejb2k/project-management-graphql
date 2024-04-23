@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: tasks
@@ -15,5 +17,6 @@ FactoryBot.define do
   factory :task do
     sequence(:title) { |n| "Task #{n}" }
     status { Task::STATUS_OPTIONS.sample }
+    project
   end
 end

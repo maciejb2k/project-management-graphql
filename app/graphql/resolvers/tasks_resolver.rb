@@ -12,8 +12,7 @@ module Resolvers
     def resolve(project_id:, query: nil)
       authenticate_user!
 
-      current_user
-        .projects
+      Project
         .find(project_id)
         .tasks
         .lazy_preload(:comments)

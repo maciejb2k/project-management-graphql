@@ -7,4 +7,8 @@ class ApplicationPolicy
     @user = user
     @record = record
   end
+
+  def permission?(action, resource)
+    user.permission?(action:, resource:)
+  end
 end

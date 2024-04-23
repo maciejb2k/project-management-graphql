@@ -17,6 +17,8 @@ module Mutations
              .projects.find(project_id)
              .tasks.build(attributes.to_h)
 
+      authorize task, :create?
+
       if task.save
         {
           task:,

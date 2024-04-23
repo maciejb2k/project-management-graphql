@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ProjectPolicy < ApplicationPolicy
-  def show?
+  def read?
     owner? || member?
   end
 
@@ -13,7 +13,7 @@ class ProjectPolicy < ApplicationPolicy
     owner?
   end
 
-  def destroy?
+  def delete?
     owner?
   end
 

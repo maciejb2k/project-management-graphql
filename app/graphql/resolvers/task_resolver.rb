@@ -12,7 +12,7 @@ module Resolvers
     def resolve(project_id:, id:)
       authenticate_user!
 
-      projects = current_user.projects.find(project_id)
+      projects = Project.find(project_id)
       projects.tasks.find(id)
     end
   end

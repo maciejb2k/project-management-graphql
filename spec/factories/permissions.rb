@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: permissions
@@ -10,6 +12,8 @@
 #
 FactoryBot.define do
   factory :permission do
-    
+    action { nil }
+    resource { nil }
+    role_permission
   end
 end
