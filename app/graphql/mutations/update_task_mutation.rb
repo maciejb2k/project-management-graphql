@@ -14,10 +14,10 @@ module Mutations
     def resolve(project_id:, id:, attributes:)
       authenticate_user!
 
-      task = current_user
-             .projects.find(project_id)
-             .tasks.find(id)
+      project = current_user.projects.find(project_id)
+      authorize project, :read?
 
+      task = project.tasks.find(id)
       authorize task, :update?
 
       if task.update(attributes.to_h)

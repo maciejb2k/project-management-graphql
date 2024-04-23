@@ -16,7 +16,7 @@ module Resolvers
 
       authorize project, :read?
 
-      project.tasks.find(id)
+      policy_scope(project.tasks).find(id)
     end
   end
 end

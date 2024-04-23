@@ -1,29 +1,31 @@
 # frozen_string_literal: true
 
 class TaskPolicy < ApplicationPolicy
+  class Scope < ApplicationPolicy::Scope
+    def resolve
+      raise Pundit::NotDefinedError, "Cannot scope NilClass" unless permission?(:read, :task)
+
+      scope.all
+    end
+  end
+
   def create?
-    member? && permission?(:create, :task)
+    permission?(:create, :task)
   end
 
   def read?
-    member? && permission?(:read, :task)
+    permission?(:read, :task)
   end
 
   def update?
-    member? && permission?(:update, :task)
+    permission?(:update, :task)
   end
 
   def delete?
-    member? && permission?(:delete, :task)
+    permission?(:delete, :task)
   end
 
   def status_change?
-    member? && permission?(:status_change, :task)
-  end
-
-  private
-
-  def member?
-    record.project.members.include?(user)
+    permission?(:status_change, :task)
   end
 end

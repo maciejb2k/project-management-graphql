@@ -16,8 +16,7 @@ module Resolvers
 
       authorize project, :read?
 
-      project
-        .tasks
+      policy_scope(project.tasks)
         .lazy_preload(:comments)
         .ransack(query.to_h)
         .result(distinct: true)
