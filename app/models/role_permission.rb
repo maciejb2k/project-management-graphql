@@ -15,4 +15,12 @@ class RolePermission < ApplicationRecord
   belongs_to :permission
 
   validates :role_id, uniqueness: { scope: :permission_id }
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[created_at id permission_id role_id updated_at]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[permission role]
+  end
 end

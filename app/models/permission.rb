@@ -16,4 +16,12 @@ class Permission < ApplicationRecord
 
   validates :action, presence: true, uniqueness: { scope: :resource }
   validates :resource, presence: true
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[role_permissions roles]
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[action created_at id resource updated_at]
+  end
 end

@@ -21,6 +21,14 @@ class ProjectMember < ApplicationRecord
   validates :project_id, uniqueness: { scope: :user_id }
   validates :role, uniqueness: { scope: %i[project_id user_id], if: -> { owner? } }
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[created_at id project_id role updated_at user_id]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[project user]
+  end
+
   def owner?
     role == "owner"
   end
