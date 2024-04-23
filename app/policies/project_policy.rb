@@ -1,19 +1,25 @@
 # frozen_string_literal: true
 
 class ProjectPolicy < ApplicationPolicy
-  def show?
-    owner? || member?
+  class Scope < ApplicationPolicy::Scope
+    def resolve
+      scope.joins(:project_members).where(project_members: { user: })
+    end
   end
 
   def create?
     owner?
   end
 
+  def read?
+    owner? || member?
+  end
+
   def update?
     owner?
   end
 
-  def destroy?
+  def delete?
     owner?
   end
 

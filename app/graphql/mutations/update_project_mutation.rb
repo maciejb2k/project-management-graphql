@@ -15,6 +15,8 @@ module Mutations
 
       project = current_user.projects.find(id)
 
+      authorize project, :update?
+
       if project.update(attributes.to_h)
         {
           project:,

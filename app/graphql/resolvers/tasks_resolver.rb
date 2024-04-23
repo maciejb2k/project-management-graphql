@@ -12,10 +12,11 @@ module Resolvers
     def resolve(project_id:, query: nil)
       authenticate_user!
 
-      current_user
-        .projects
-        .find(project_id)
-        .tasks
+      project = Project.find(project_id)
+
+      authorize project, :read?
+
+      policy_scope(project.tasks)
         .lazy_preload(:comments)
         .ransack(query.to_h)
         .result(distinct: true)

@@ -14,6 +14,8 @@ module Mutations
 
       project = current_user.projects.build(attributes.to_h)
 
+      authorize project, :create?
+
       unless project.save
         return {
           project: nil,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_20_174225) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_22_112446) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,6 +66,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_20_174225) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "permissions", force: :cascade do |t|
+    t.string "action", null: false
+    t.string "resource", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["action", "resource"], name: "index_permissions_on_action_and_resource", unique: true
+  end
+
   create_table "project_members", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -90,6 +98,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_20_174225) do
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
+  create_table "role_permissions", force: :cascade do |t|
+    t.bigint "role_id", null: false
+    t.bigint "permission_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permission_id"], name: "index_role_permissions_on_permission_id"
+    t.index ["role_id", "permission_id"], name: "index_role_permissions_on_role_id_and_permission_id", unique: true
+    t.index ["role_id"], name: "index_role_permissions_on_role_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_roles_on_name", unique: true
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "title", null: false
     t.integer "estimated_time"
@@ -99,6 +124,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_20_174225) do
     t.datetime "updated_at", null: false
     t.bigint "project_id", null: false
     t.index ["project_id"], name: "index_tasks_on_project_id"
+  end
+
+  create_table "user_roles", force: :cascade do |t|
+    t.bigint "role_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id", "user_id"], name: "index_user_roles_on_role_id_and_user_id", unique: true
+    t.index ["role_id"], name: "index_user_roles_on_role_id"
+    t.index ["user_id"], name: "index_user_roles_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -122,5 +157,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_20_174225) do
   add_foreign_key "project_members", "projects"
   add_foreign_key "project_members", "users"
   add_foreign_key "projects", "users"
+  add_foreign_key "role_permissions", "permissions"
+  add_foreign_key "role_permissions", "roles"
   add_foreign_key "tasks", "projects"
+  add_foreign_key "user_roles", "roles"
+  add_foreign_key "user_roles", "users"
 end

@@ -11,9 +11,7 @@ module Resolvers
     def resolve(id:)
       authenticate_user!
 
-      Project
-        .joins(:project_members)
-        .where(project_members: { user: current_user })
+      policy_scope(Project)
         .lazy_preload(tasks: :comments)
         .find(id)
     end

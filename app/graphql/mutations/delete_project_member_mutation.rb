@@ -14,6 +14,9 @@ module Mutations
       authenticate_user!
 
       project = Project.find(project_id)
+
+      authorize project, :read?
+
       project_member = project.project_members.find_by!(user_id:)
 
       authorize project_member, :destroy?

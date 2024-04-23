@@ -1,3 +1,5 @@
+# GraphQL ToDo List
+
 ## Potrzeby
 
 CRUD ToDo LisT przez GraphQL (Relay) z mozliwością filtrowania zadań przez Ransack.

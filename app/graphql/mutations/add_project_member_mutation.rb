@@ -14,7 +14,10 @@ module Mutations
     def resolve(project_id:, user_id:, role:)
       authenticate_user!
 
-      project = Project.find(project_id) # or current_user.projects.find(project_id)
+      project = Project.find(project_id)
+
+      authorize project, :read?
+
       user = User.find(user_id)
       project_member = project.project_members.build(user:, role:)
 
