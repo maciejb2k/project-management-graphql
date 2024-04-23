@@ -99,3 +99,8 @@ end
 
 Rails.logger.info "Projects and tasks created"
 Rails.logger.info "Seeding finished"
+
+if Rails.env.development?
+  AdminUser.create!(email: "admin@example.com", password: "password",
+                    password_confirmation: "password")
+end
