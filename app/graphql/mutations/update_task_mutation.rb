@@ -15,9 +15,11 @@ module Mutations
       authenticate_user!
 
       project = current_user.projects.find(project_id)
+
       authorize project, :read?
 
       task = project.tasks.find(id)
+
       authorize task, :update?
 
       if task.update(attributes.to_h)

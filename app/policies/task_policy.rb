@@ -3,9 +3,11 @@
 class TaskPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      raise Pundit::NotDefinedError, "Cannot scope NilClass" unless permission?(:read, :task)
-
-      scope.all
+      if permission?(:read, :task)
+        scope.all
+      else
+        scope.none
+      end
     end
   end
 

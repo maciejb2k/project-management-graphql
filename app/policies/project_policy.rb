@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class ProjectPolicy < ApplicationPolicy
+  class Scope < ApplicationPolicy::Scope
+    def resolve
+      scope.joins(:project_members).where(project_members: { user: })
+    end
+  end
+
   def create?
     owner?
   end
