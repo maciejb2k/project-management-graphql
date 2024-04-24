@@ -40,6 +40,7 @@ gem "activeadmin-searchable_select", "~> 1.8.0"
 gem "active_admin_datetimepicker", "~> 1.1.0"
 
 gem "faker", "~> 3.3.0"
+gem "pry", "~> 0.14.2"
 
 group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]

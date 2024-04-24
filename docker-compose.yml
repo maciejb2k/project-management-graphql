@@ -15,6 +15,8 @@ services:
     ports:
       - "3600:3000"
     command: bash -c "bundle exec rails db:migrate && rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    tty: true
+    stdin_open: true # for debugging: "docker compose up -d && docker compose attach app"
   db:
     image: postgres:15
     environment:
