@@ -35,6 +35,7 @@ gem "validates_timeliness", "~> 7.0.0.beta1"
 
 gem "sassc-rails"
 gem "activeadmin", "~> 3.2.0"
+gem "activeadmin-searchable_select", "~> 1.8.0"
 
 gem "faker", "~> 3.3.0"
 
