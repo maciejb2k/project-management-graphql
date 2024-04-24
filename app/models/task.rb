@@ -27,4 +27,8 @@ class Task < ApplicationRecord
   def self.ransackable_attributes(_auth_object = nil)
     %w[title estimated_time delivered_time status]
   end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[comments project]
+  end
 end

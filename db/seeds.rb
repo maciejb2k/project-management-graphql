@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 Rails.logger = Logger.new($stdout)
-Rails.logger.info "Seeding database"
+Rails.logger.info "[SEED] Seeding database"
 
 Doorkeeper::Application.create(name: "WebApp", redirect_uri: "", scopes: "")
 
-Rails.logger.info "Doorkeeper application created"
+Rails.logger.info "[SEED] Doorkeeper application created"
 
 Role.create(
   [
@@ -16,7 +16,7 @@ Role.create(
   ]
 )
 
-Rails.logger.info "Roles created"
+Rails.logger.info "[SEED] Roles created"
 
 Permission.create(
   [
@@ -33,7 +33,7 @@ Permission.create(
   ]
 )
 
-Rails.logger.info "Permissions created"
+Rails.logger.info "[SEED] Permissions created"
 
 supervisor = Role.find_by(name: "supervisor")
 supervisor.permissions << Permission.where(
@@ -57,7 +57,7 @@ operator.permissions << Permission.where(
   resource: "task"
 )
 
-Rails.logger.info "Permissions associated with roles"
+Rails.logger.info "[SEED] Permissions associated with roles"
 
 users = User.create!(
   [
@@ -68,13 +68,23 @@ users = User.create!(
   ]
 )
 
-Rails.logger.info "Users created"
+Rails.logger.info "[SEED] Users created"
+
+if Rails.env.development? || Rails.env.test?
+  AdminUser.create!(
+    email: "admin@example.com",
+    password: "password",
+    password_confirmation: "password"
+  )
+
+  Rails.logger.info "[SEED] Admin user created"
+end
 
 User.find_by(email: "maciek@example.com").roles << Role.find_by(name: "supervisor")
 User.find_by(email: "konrad@example.com").roles << Role.find_by(name: "manager")
 User.find_by(email: "anna@example.com").roles << Role.find_by(name: "operator")
 
-Rails.logger.info "Users roles associated"
+Rails.logger.info "[SEED] Users roles associated"
 
 projects = users.map do |user|
   project = Project.create(
@@ -97,5 +107,5 @@ projects.each do |project|
   end
 end
 
-Rails.logger.info "Projects and tasks created"
-Rails.logger.info "Seeding finished"
+Rails.logger.info "[SEED] Projects and tasks created"
+Rails.logger.info "[SEED] Seeding finished"

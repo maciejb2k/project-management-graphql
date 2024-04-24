@@ -39,6 +39,18 @@ class User < ApplicationRecord
   has_many :memberships, through: :project_members, source: :project
   has_many :comments, dependent: :destroy
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[email created_at updated_at]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[memberships project_members projects roles user_roles]
+  end
+
+  def display_name
+    email
+  end
+
   def self.authenticate(email, password)
     user = User.find_for_authentication(email:)
     user&.valid_password?(password) ? user : nil
