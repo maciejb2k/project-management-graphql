@@ -10,7 +10,10 @@
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";
+
+// Plugins
 @import "active_admin/searchable_select";
+@import "active_admin_datetimepicker";
 
 // Overriding any non-variable Sass must be done after the fact.
 // For example, to change the default status-tag color:

@@ -10,8 +10,8 @@ ActiveAdmin.register Project do
       input :user, as: :searchable_select
       input :title
       input :description
-      input :start_date
-      input :end_date
+      input :start_date, as: :date_time_picker
+      input :end_date, as: :date_time_picker
     end
 
     f.actions
@@ -19,8 +19,8 @@ ActiveAdmin.register Project do
 
   filter :title
   filter :description
-  filter :created_at
-  filter :updated_at
+  filter :created_at, as: :date_time_range
+  filter :updated_at, as: :date_time_range
 
   actions :all, except: []
 end

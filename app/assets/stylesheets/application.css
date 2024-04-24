@@ -10,6 +10,12 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
+ * ---
+ *
+ * [Dev comment] `require_tree` has been removed to avoid overriding the styles with e.g. ActiveAdmin.
+ * [Dev comment] You have to explicitly require stylesheet files you want to include with `require` directive.
+ *
+ * ---
+ *
  *= require_self
  */

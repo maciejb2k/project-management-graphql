@@ -33,9 +33,11 @@ gem "pundit", "~> 2.3.1"
 gem "annotate", "~> 3.2.0"
 gem "validates_timeliness", "~> 7.0.0.beta1"
 
-gem "sassc-rails"
+gem "sassc-rails", "~> 2.1.2"
+
 gem "activeadmin", "~> 3.2.0"
 gem "activeadmin-searchable_select", "~> 1.8.0"
+gem "active_admin_datetimepicker", "~> 1.1.0"
 
 gem "faker", "~> 3.3.0"
 
