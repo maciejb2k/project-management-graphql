@@ -1,20 +1,23 @@
-# GraphQL ToDo List
+# Rails Todo Graphql
 
-## Potrzeby
+Projekt realizowany w ramach nauki Ruby on Rails oraz popularnych bibliotek.
 
-CRUD ToDo LisT przez GraphQL (Relay) z mozliwością filtrowania zadań przez Ransack.
+## Technologie
 
-Zadanie posiada pola:
- - title
- - estimated time
- - delivered time
- - stutus (todo, doing, done)
+`Ruby 3.2.0`, `Rails 7.0`, `PostgreSQL`, `GraphQL`, `GraphiQL`, `Ransack`, `RSpec`, `FactoryBot`, `Faker`, `Rubocop`, `Pry`, `Devise`, `Doorkeeper`, `Pundit`, `ActiveAdmin`.
 
-## Definition of Done
- - tests green
- - code in git repo (branch model)
- - MR
- - issue board (to do, doing, done)
+## Główna Funkcjonalność
 
-## Kryteria akceptacji
- - create, read, update, delete przez GraphQL
+Aplikacja pozwala na:
+- Tworzenie nowych użytkowników
+- Tworzenie nowych projektów
+- Dodawanie zadań do projektów
+- Wielu użytkowników może pracować nad jednym projektem
+
+![Zrzut ekranu 2024-04-23 170253](https://github.com/maciejb2k/chronlife/assets/6316812/89a7828b-94af-4431-ad4b-eb3ca60e36b7)
+
+Cały schemat ERD wygląda następująco:
+
+![erd](https://github.com/maciejb2k/chronlife/assets/6316812/0cf9ad81-bbcc-46d4-bf1c-78a985b9d67d)
+
+

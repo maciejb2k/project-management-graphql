@@ -11,5 +11,6 @@ module Types
     field :create_task, mutation: Mutations::CreateTaskMutation
     field :update_task, mutation: Mutations::UpdateTaskMutation
     field :delete_task, mutation: Mutations::DeleteTaskMutation
+    field :change_task_status, mutation: Mutations::ChangeTaskStatusMutation
   end
 end

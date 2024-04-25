@@ -31,4 +31,8 @@ class Task < ApplicationRecord
   def self.ransackable_associations(_auth_object = nil)
     %w[comments project]
   end
+
+  def change_status!(status)
+    update(status:)
+  end
 end
