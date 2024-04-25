@@ -3,6 +3,8 @@
 ActiveAdmin.register Task do
   menu parent: "Resources"
 
+  includes :project
+
   permit_params :title, :estimated_time, :delivered_time, :status, :project_id
 
   form do |f|

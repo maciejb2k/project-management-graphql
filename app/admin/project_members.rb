@@ -3,6 +3,8 @@
 ActiveAdmin.register ProjectMember do
   menu parent: "Resources"
 
+  includes :user, :project
+
   form do |f|
     f.inputs do
       input :project, as: :searchable_select

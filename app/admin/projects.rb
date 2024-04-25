@@ -3,6 +3,8 @@
 ActiveAdmin.register Project do
   menu parent: "Resources"
 
+  includes :user
+
   permit_params :title, :description, :start_date, :end_date, :is_deleted, :user_id
 
   form do |f|
