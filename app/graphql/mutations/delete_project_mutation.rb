@@ -13,7 +13,6 @@ module Mutations
       authenticate_user!
 
       project = current_user.projects.find(id)
-
       authorize project, :delete?
 
       if project.destroy

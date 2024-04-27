@@ -12,8 +12,7 @@ module Mutations
     def resolve(attributes:)
       authenticate_user!
 
-      project = current_user.projects.build(attributes.to_h)
-
+      project = current_user.projects.build(attributes)
       authorize project, :create?
 
       unless project.save

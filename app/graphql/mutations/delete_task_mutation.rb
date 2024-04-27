@@ -13,7 +13,6 @@ module Mutations
       authenticate_user!
 
       task = Task.find(id)
-
       authorize task, :delete?
 
       if task.destroy

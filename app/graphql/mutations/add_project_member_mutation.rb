@@ -17,7 +17,6 @@ module Mutations
       project = Project.find(project_id)
       user = User.find(user_id)
       project_member = project.project_members.build(user:, role:)
-
       authorize project_member, :create?
 
       if project_member.save

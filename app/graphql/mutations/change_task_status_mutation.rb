@@ -14,7 +14,6 @@ module Mutations
       authenticate_user!
 
       task = Task.find(id)
-
       authorize task, :status_change?
 
       if task.change_status!(status)

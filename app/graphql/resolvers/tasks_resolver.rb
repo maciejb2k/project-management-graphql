@@ -16,7 +16,7 @@ module Resolvers
 
       policy_scope(project.tasks)
         .lazy_preload(:comments)
-        .ransack(query.to_h)
+        .ransack(query)
         .result(distinct: true)
     end
   end

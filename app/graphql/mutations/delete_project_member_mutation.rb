@@ -15,7 +15,6 @@ module Mutations
 
       project = Project.find(project_id)
       project_member = project.project_members.find_by!(user_id:)
-
       authorize project_member, :destroy?
 
       if project_member.destroy

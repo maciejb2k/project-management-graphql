@@ -14,7 +14,6 @@ module Mutations
       authenticate_user!
 
       task = Task.find(id)
-
       authorize task, :update?
 
       if task.update(attributes.to_h)
