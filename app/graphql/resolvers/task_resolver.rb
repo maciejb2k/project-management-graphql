@@ -12,11 +12,10 @@ module Resolvers
     def resolve(project_id:, id:)
       authenticate_user!
 
-      project = Project.find(project_id)
+      project = policy_scope(Project).find(project_id)
 
-      authorize project, :read?
-
-      policy_scope(project.tasks).find(id)
+      policy_scope(project.tasks)
+        .find(id)
     end
   end
 end

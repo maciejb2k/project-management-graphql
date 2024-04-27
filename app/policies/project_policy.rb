@@ -23,8 +23,6 @@ class ProjectPolicy < ApplicationPolicy
     owner?
   end
 
-  private
-
   def owner?
     user == record.owner
   end

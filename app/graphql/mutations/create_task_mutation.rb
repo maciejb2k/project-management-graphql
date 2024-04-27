@@ -13,10 +13,7 @@ module Mutations
     def resolve(project_id:, attributes:)
       authenticate_user!
 
-      project = current_user.projects.find(project_id)
-
-      authorize project, :read?
-
+      project = Project.find(project_id)
       task = project.tasks.build(attributes.to_h)
 
       authorize task, :create?

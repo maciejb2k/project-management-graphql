@@ -15,9 +15,6 @@ module Mutations
       authenticate_user!
 
       project = Project.find(project_id)
-
-      authorize project, :read?
-
       user = User.find(user_id)
       project_member = project.project_members.build(user:, role:)
 

@@ -3,7 +3,7 @@
 module Mutations
   RSpec.describe UpdateTaskMutation, type: :request do
     context "when user is not authenticated" do
-      let(:query) { create_query(project_id: 1, id: 1, title: "renamed", status: "done") }
+      let(:query) { create_query(id: 1, title: "renamed", status: "done") }
 
       include_examples "returns an error when user is not authenticated"
     end
@@ -15,7 +15,7 @@ module Mutations
       context "when the request is valid" do
         let!(:project) { create(:project, user:) }
         let!(:task) { create(:task, project:, title: "task to rename") }
-        let!(:valid_query) { create_query(project_id: project.id, id: task.id, title: "renamed", status: "done") }
+        let!(:valid_query) { create_query(id: task.id, title: "renamed", status: "done") }
 
         it "updates a task" do
           post "/api/graphql", params: { query: valid_query }, headers: auth_headers(tokens)
@@ -44,7 +44,7 @@ module Mutations
         context "when the id is invalid" do
           let!(:project) { create(:project, user:) }
           let!(:task) { create(:task, project:, title: "task to rename") }
-          let!(:valid_query) { create_query(project_id: project.id, id: task.id, title: "renamed", status: "done") }
+          let!(:valid_query) { create_query(id: task.id, title: "renamed", status: "done") }
 
           before do
             task.destroy
@@ -59,10 +59,10 @@ module Mutations
       end
     end
 
-    def create_query(project_id:, id:, title: "Task 1", status: "todo")
+    def create_query(id:, title: "Task 1", status: "todo")
       <<~GQL
         mutation {
-          updateTask(input: { projectId: #{project_id}, id: #{id}, attributes: { title: "#{title}", status: "#{status}" }}) {
+          updateTask(input: { id: #{id}, attributes: { title: "#{title}", status: "#{status}" }}) {
             task {
               id
               title

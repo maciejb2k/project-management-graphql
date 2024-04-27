@@ -12,9 +12,7 @@ module Resolvers
     def resolve(project_id:, query: nil)
       authenticate_user!
 
-      project = Project.find(project_id)
-
-      authorize project, :read?
+      project = policy_scope(Project).find(project_id)
 
       policy_scope(project.tasks)
         .lazy_preload(:comments)

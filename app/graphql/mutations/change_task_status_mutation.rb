@@ -4,21 +4,16 @@ module Mutations
   class ChangeTaskStatusMutation < Mutations::BaseMutation
     description "Change the status of a task"
 
-    argument :project_id, ID, required: true
     argument :id, ID, required: true
     argument :status, Types::TaskStatusEnum, required: true
 
     field :task, Types::TaskType, null: true
     field :errors, [String], null: true
 
-    def resolve(project_id:, id:, status:)
+    def resolve(id:, status:)
       authenticate_user!
 
-      project = current_user.projects.find(project_id)
-
-      authorize project, :read?
-
-      task = project.tasks.find(id)
+      task = Task.find(id)
 
       authorize task, :status_change?
 

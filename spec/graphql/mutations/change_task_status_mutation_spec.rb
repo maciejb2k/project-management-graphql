@@ -3,7 +3,7 @@
 module Mutations
   RSpec.describe ChangeTaskStatusMutation, type: :request do
     context "when user is not authenticated" do
-      let(:query) { create_query(project_id: 1, id: 1, status: "done") }
+      let(:query) { create_query(id: 1, status: "done") }
 
       include_examples "returns an error when user is not authenticated"
     end
@@ -15,7 +15,7 @@ module Mutations
       context "when the request is valid" do
         let!(:project) { create(:project, user:) }
         let!(:task) { create(:task, project:, status: "doing") }
-        let!(:valid_query) { create_query(project_id: project.id, id: task.id, status: "done") }
+        let!(:valid_query) { create_query(id: task.id, status: "done") }
 
         it "updates a task" do
           post "/api/graphql", params: { query: valid_query }, headers: auth_headers(tokens)
@@ -42,7 +42,7 @@ module Mutations
         context "when the id is invalid" do
           let!(:project) { create(:project, user:) }
           let!(:task) { create(:task, project:, status: "todo") }
-          let!(:valid_query) { create_query(project_id: project.id, id: task.id, status: "done") }
+          let!(:valid_query) { create_query(id: task.id, status: "done") }
 
           before do
             task.destroy
@@ -58,7 +58,7 @@ module Mutations
         context "when the status is invalid" do
           let!(:project) { create(:project, user:) }
           let!(:task) { create(:task, project:, status: "todo") }
-          let!(:valid_query) { create_query(project_id: project.id, id: task.id, status: "invalid") }
+          let!(:valid_query) { create_query(id: task.id, status: "invalid") }
 
           it "returns an error" do
             post "/api/graphql", params: { query: valid_query }, headers: auth_headers(tokens)
@@ -71,10 +71,10 @@ module Mutations
       end
     end
 
-    def create_query(project_id:, id:, status: "todo")
+    def create_query(id:, status: "todo")
       <<~GQL
         mutation {
-          changeTaskStatus(input: { projectId: #{project_id}, id: #{id}, status: #{status} }) {
+          changeTaskStatus(input: { id: #{id}, status: #{status} }) {
             task {
               id
               status

@@ -25,11 +25,6 @@ Permission.create(
     { action: "update",        resource: "task" },
     { action: "delete",        resource: "task" },
     { action: "status_change", resource: "task" },
-
-    { action: "create",        resource: "project" },
-    { action: "read",          resource: "project" },
-    { action: "update",        resource: "project" },
-    { action: "delete",        resource: "project" }
   ]
 )
 

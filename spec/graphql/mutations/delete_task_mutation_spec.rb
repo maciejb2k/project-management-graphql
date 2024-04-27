@@ -3,7 +3,7 @@
 module Mutations
   RSpec.describe DeleteTaskMutation, type: :request do
     context "when user is not authenticated" do
-      let(:query) { create_query(project_id: 1, id: 1) }
+      let(:query) { create_query(id: 1) }
 
       include_examples "returns an error when user is not authenticated"
     end
@@ -15,7 +15,7 @@ module Mutations
       context "when the request is valid" do
         let!(:project) { create(:project, user:) }
         let!(:task) { create(:task, project:) }
-        let!(:valid_query) { create_query(project_id: project.id, id: task.id) }
+        let!(:valid_query) { create_query(id: task.id) }
 
         it "deletes a task" do
           expect do
@@ -38,7 +38,7 @@ module Mutations
       context "when the request is invalid" do
         context "when the id is invalid" do
           let!(:project) { create(:project, user:) }
-          let!(:invalid_query) { create_query(project_id: project.id, id: "invalid_id") }
+          let!(:invalid_query) { create_query(id: "invalid_id") }
 
           it "returns an graphql error" do
             post "/api/graphql", params: { query: invalid_query }, headers: auth_headers(tokens)
@@ -52,7 +52,7 @@ module Mutations
         context "when the id is already deleted" do
           let!(:project) { create(:project, user:) }
           let!(:task) { create(:task, project:) }
-          let!(:valid_query) { create_query(project_id: project.id, id: task.id) }
+          let!(:valid_query) { create_query(id: task.id) }
 
           before do
             task.destroy
@@ -67,10 +67,10 @@ module Mutations
       end
     end
 
-    def create_query(project_id:, id:)
+    def create_query(id:)
       <<~GQL
         mutation {
-          deleteTask(input: { projectId: #{project_id}, id: #{id} }) {
+          deleteTask(input: { id: #{id} }) {
             success
             errors
           }
