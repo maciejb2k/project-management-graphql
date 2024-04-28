@@ -11,12 +11,15 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :user, Types::UserType, null: false
-    field :tasks, [Types::TaskType], null: false
-    field :members, [Types::UserType], null: false
-    field :owner, Types::UserType, null: false
 
-    def owner
-      object.project_members.find_by(role: "owner").user
+    field :tasks, [Types::TaskType], null: true
+    def tasks
+      policy_scope(object.tasks)
     end
+
+    field :members, [Types::UserType], null: false
+
+    field :owner, Types::UserType, null: false
+    delegate :owner, to: :object
   end
 end

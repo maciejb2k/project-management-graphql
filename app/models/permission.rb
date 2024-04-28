@@ -24,4 +24,8 @@ class Permission < ApplicationRecord
   def self.ransackable_attributes(_auth_object = nil)
     %w[action created_at id resource updated_at]
   end
+
+  def display_name
+    ":#{action}, :#{resource}"
+  end
 end

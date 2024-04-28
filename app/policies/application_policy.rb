@@ -2,6 +2,8 @@
 
 class ApplicationPolicy
   class Scope
+    include PermissionCheck
+
     attr_reader :user, :scope
 
     def initialize(user, scope)
@@ -9,19 +11,17 @@ class ApplicationPolicy
       @scope = scope
     end
 
-    def permission?(action, resource)
-      user.permission?(action:, resource:)
+    def resolve
+      scope.all
     end
   end
+
+  include PermissionCheck
 
   attr_reader :user, :record
 
   def initialize(user, record)
     @user = user
     @record = record
-  end
-
-  def permission?(action, resource)
-    user.permission?(action:, resource:)
   end
 end
