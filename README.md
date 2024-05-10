@@ -2,7 +2,7 @@
 
 Simple project management system with GraphQL API, allowing multiple users collaborating on projects and tasks.
 
-![graphiql](https://github.com/maciejb2k/todo-graphql/assets/6316812/778f5833-98e4-47af-9f51-cb48e375da47)
+![graphiql](https://github.com/maciejb2k/chronlife/assets/6316812/b743a36f-06d3-4d0c-87cb-96b88dd3c516)
 
 ## Technologies
 
@@ -10,17 +10,16 @@ Simple project management system with GraphQL API, allowing multiple users colla
 
 ## Implemented Functionalities
 
-- **GraphQL API** with pagination, sorting, filtering, and error handling
-- User authentication with **Devise** and **OAuth 2.0** API access with **Doorkeeper**
-- **RBAC** (Role-based access control) with fully customizable **permissions matrix**
-- Authorization with **Pundit** policies
-- Admin panel with **ActiveAdmin** for system admin
-- **RSpec** with fully coverd graphql queries and mutations
+- [x] **GraphQL API** with pagination, sorting, filtering, and error handling.
+- [x] User authentication with **Devise** and **OAuth 2.0** API access with **Doorkeeper**.
+- [x] Authorization rules with **Pundit** policies.
+- [x] **RBAC** (Role-based access control) with fully customizable **permissions matrix**.
+- [x] Admin panel with **ActiveAdmin** for system admin.
+- [x] **RSpec** specs with fully covered graphql queries and mutations.
 
 Below is a ERD diagram of the project:
 
 ![ERD](https://github.com/maciejb2k/chronlife/assets/6316812/0cf9ad81-bbcc-46d4-bf1c-78a985b9d67d)
-
 
 ## Getting Started
 
